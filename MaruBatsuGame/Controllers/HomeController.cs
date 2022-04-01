@@ -4,13 +4,15 @@ using MaruBatsuGame.Models;
 
 namespace MaruBatsuGame.Controllers;
 public class HomeController : Controller{
-	public IActionResult Index(GameModel? gameModel = null){
-		if (gameModel==null){
-			gameModel = new GameModel();
-		}
-		else{
-			gameModel.NextTurn();
-		}
+	public IActionResult Index(){
+		
+		var	gameModel = new GameModel();
+		
+		return View(gameModel);
+	}
+	[HttpPost]
+	public IActionResult Index(GameModel gameModel){
+		gameModel.NextTurn();
 		return View(gameModel);
 	}
 }
