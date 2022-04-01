@@ -16,3 +16,11 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.table {
+  width: 300px; !important;
+}
+td {
+  width: 100px;
+  height: 100px;
+}
