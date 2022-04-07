@@ -15,7 +15,9 @@ public class HomeController : Controller{
 	}
 
 	public IActionResult NewGame(){
+		var _temp = GameModel.Instance.playWithCom;
 		GameModel.Instance = new GameModel();
+		GameModel.Instance.playWithCom = _temp;
 		return RedirectToAction("Index");
 	}
 
