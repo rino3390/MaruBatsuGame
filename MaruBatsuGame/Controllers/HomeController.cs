@@ -3,16 +3,30 @@ using Microsoft.AspNetCore.Mvc;
 using MaruBatsuGame.Models;
 
 namespace MaruBatsuGame.Controllers;
+
 public class HomeController : Controller{
 	public IActionResult Index(){
-		
-		var	gameModel = new GameModel();
-		
-		return View(gameModel);
+		return View();
 	}
-	[HttpPost]
-	public IActionResult Index(GameModel gameModel){
-		gameModel.NextTurn();
-		return View(gameModel);
+
+	public IActionResult NextStep(int step){
+		GameModel.Instance.NextTurn(step);
+		return RedirectToAction("Index");
+	}
+
+	public IActionResult NewGame(){
+		GameModel.Instance = new GameModel();
+		return RedirectToAction("Index");
+	}
+
+	public IActionResult PlayerTime(){
+		GameModel.Instance = new GameModel();
+		GameModel.Instance.playWithCom = false;
+		return RedirectToAction("Index");
+	}
+	public IActionResult ComTime(){
+		GameModel.Instance = new GameModel();
+		GameModel.Instance.playWithCom = true;
+		return RedirectToAction("Index");
 	}
 }

@@ -1,14 +1,43 @@
 ﻿@{
 	ViewData["Title"] = "Maru Batsu Game";
 }
-@model GameModel
-
+@{ var turn = GameModel.Instance.turn == 0 ? "O" : "X"; }
+@if (GameModel.Instance.IsGameOver()){
+	<div class="m-2">遊戲結束囉</div>
+}
+else{
+	<div class="m-2">@turn 的回合</div>
+}
 <table class="align-content-center table table-bordered table-dark text-center">
 	@for (int i = 0, game = 0; i < 3; i++){
 		<tr>
 			@for (int j = 0; j < 3; j++,game++){
-				<td class="align-middle">@Model.maruBatsu[game]</td>
+				<td class="align-middle" onclick="location.href='@Url.ActionLink("NextStep", "Home", new {step = game})'">@GameModel.Instance.maruBatsuText[game]</td>
 			}
 		</tr>
 	}
 </table>
+<div class="m-2 text-danger">
+	@switch (GameModel.Instance.stat){
+		case GameModel.GameStat.Gaming:
+			break;
+		case GameModel.GameStat.Maru:
+			<div class="fs-2">まるの勝利だ！</div>
+			break;
+		case GameModel.GameStat.Batsu:
+			<div class="fs-2">ばつの勝利だ！</div>
+			break;
+		case GameModel.GameStat.Draw:
+			<div>和局了耶(´・ω・`)</div>
+			break;
+		default:
+			throw new ArgumentOutOfRangeException();
+	}
+</div>
+@if (GameModel.Instance.playWithCom){
+	<a asp-action="PlayerTime" type="button" class="btn btn-outline-secondary">自行對戰</a>
+}
+else{
+	<a asp-action="ComTime" type="button" class="btn btn-outline-secondary">電腦對戰</a>
+}
+<a asp-action="NewGame" type="button" class="btn btn-outline-secondary m-3">重新開始</a>

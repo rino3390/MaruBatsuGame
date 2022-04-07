@@ -5,34 +5,74 @@ public class GameModel{
 		for (var _i = 0; _i < maruBatsu.Length; _i++){
 			maruBatsu[_i] = -1;
 		}
+
 		stat = GameStat.Gaming;
+		maruBatsuText = new string[9];
+		turn = 0;
 	}
 
-	public int[] maruBatsu = new int[9];
-	public string[] maruBatsuText = new string[9];
+	public static GameModel Instance = new();
 
-	public int turn = 0;
+	public int[] maruBatsu = new int[9];
+	public string[] maruBatsuText;
+
+	public int turn;
 	public GameStat stat;
-	public int place;
+	public bool playWithCom = true;
+	public bool playerFirst = true;
+
 	public bool IsGameOver(){
-		return maruBatsu.All(x => x != -1);
+		return maruBatsu.All(x => x != -1) || IsWin();
 	}
 
 	public bool IsWin(){
-		return winRole.Any(_i => _i.All(x => x is 1 or 0));
+		return winRole.Any(_i => _i.All(x => maruBatsu[x] is 1) || _i.All(x => maruBatsu[x] is 0));
 	}
 
-	public void NextTurn(){
-		maruBatsu[place] = turn;
-		maruBatsuText[place] = turn == 0 ? "O" : "X";
+	public void NextTurn(int step){
+		if (IsGameOver()|| maruBatsu[step]!=-1) return;
+
+		maruBatsu[step] = turn;
+		maruBatsuText[step] = turn == 0 ? "O" : "X";
+
 		if (IsWin()){
 			stat = turn == 0 ? GameStat.Maru : GameStat.Batsu;
 		}
 
-		if (IsGameOver()){
+		else if (IsGameOver()){
 			stat = GameStat.Draw;
 		}
+
 		turn = 1 - turn;
+
+		if (turn == 1 && playerFirst && playWithCom && !IsGameOver()){
+			ComTurn();
+		}
+	}
+
+	public void ComTurn(){
+		foreach (var _role in winRole){
+			if (!_role.Any(x => maruBatsu[x] is 0 or 1)) continue;
+
+			if (maruBatsu[_role[0]] == maruBatsu[_role[1]] && maruBatsu[_role[2]] == -1){
+				NextTurn(_role[2]);
+				return;
+			}
+
+			if (maruBatsu[_role[1]] == maruBatsu[_role[2]] && maruBatsu[_role[0]] == -1){
+				NextTurn(_role[0]);
+				return;
+			}
+
+			if (maruBatsu[_role[0]] != maruBatsu[_role[2]] || maruBatsu[_role[1]] != -1) continue;
+
+			NextTurn(_role[1]);
+			return;
+		}
+
+		var _place = Enumerable.Range(0, maruBatsu.Count()).Where(x => maruBatsu[x] == -1).ToList();
+		var _random = new Random();
+		NextTurn(_place[_random.Next(_place.Count)]);
 	}
 
 	private readonly int[][] winRole = {
@@ -47,9 +87,9 @@ public class GameModel{
 	};
 
 	public enum GameStat{
-		Gaming= 0,
+		Gaming = 0,
 		Maru = 1,
-		Batsu=2,
-		Draw=3
+		Batsu = 2,
+		Draw = 3
 	}
 }
