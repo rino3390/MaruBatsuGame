@@ -15,19 +15,18 @@ public class HomeController : Controller{
 	}
 
 	public IActionResult NewGame(){
-		var _temp = GameModel.Instance.playWithCom;
-		GameModel.Instance = new GameModel();
-		GameModel.Instance.playWithCom = _temp;
+		GameModel.Instance.NewGame();
 		return RedirectToAction("Index");
 	}
 
 	public IActionResult PlayerTime(){
-		GameModel.Instance = new GameModel();
+		GameModel.Instance.NewGame();
 		GameModel.Instance.playWithCom = false;
 		return RedirectToAction("Index");
 	}
+
 	public IActionResult ComTime(){
-		GameModel.Instance = new GameModel();
+		GameModel.Instance.NewGame();
 		GameModel.Instance.playWithCom = true;
 		return RedirectToAction("Index");
 	}
