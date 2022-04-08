@@ -42,7 +42,7 @@ public class GameModel{
 #region Methods
 	public void ComTurn(){
 		foreach (var _role in winRole){
-			if (!_role.Any(x => maruBatsu[x] is 0 or 1)) continue;
+			if (_role.All(x => maruBatsu[x] is -1)) continue;
 
 			if (maruBatsu[_role[0]] == maruBatsu[_role[1]] && maruBatsu[_role[2]] == -1){
 				NextTurn(_role[2]);
