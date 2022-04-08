@@ -74,6 +74,14 @@ public class GameModel{
 		stat = GameStat.Gaming;
 		maruBatsuText = new string[9];
 		turn = 0;
+		if (!playWithCom) return;
+
+		var _random = new Random();
+		playerFirst = Convert.ToBoolean(_random.Next(0, 2));
+
+		if (!playerFirst){
+			ComTurn();
+		}
 	}
 
 	public void NextTurn(int step){
