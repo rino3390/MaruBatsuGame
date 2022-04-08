@@ -44,20 +44,13 @@ public class GameModel{
 		foreach (var _role in winRole){
 			if (_role.All(x => maruBatsu[x] is -1)) continue;
 
-			if (maruBatsu[_role[0]] == maruBatsu[_role[1]] && maruBatsu[_role[2]] == -1){
-				NextTurn(_role[2]);
-				return;
-			}
-
-			if (maruBatsu[_role[1]] == maruBatsu[_role[2]] && maruBatsu[_role[0]] == -1){
-				NextTurn(_role[0]);
-				return;
-			}
-
-			if (maruBatsu[_role[0]] != maruBatsu[_role[2]] || maruBatsu[_role[1]] != -1) continue;
-
-			NextTurn(_role[1]);
+			if (_role.Select(x=> maruBatsu[x]).Distinct().Count() != 2
+				|| _role.Count(x => maruBatsu[x] is -1) != 1)
+				continue;
+			
+			NextTurn(_role.First(x=> maruBatsu[x]==-1));
 			return;
+			
 		}
 
 		var _place = Enumerable.Range(0, maruBatsu.Count()).Where(x => maruBatsu[x] == -1).ToList();
