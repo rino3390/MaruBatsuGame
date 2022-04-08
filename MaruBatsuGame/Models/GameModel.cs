@@ -103,4 +103,14 @@ public class GameModel{
 		}
 	}
 #endregion
+
+	public void PlayerTime(){
+		playWithCom = false;
+		NewGame();
+	}
+
+	public void ComTime(){
+		playWithCom = true;
+		NewGame();
+	}
 }

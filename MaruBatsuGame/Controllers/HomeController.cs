@@ -20,14 +20,12 @@ public class HomeController : Controller{
 	}
 
 	public IActionResult PlayerTime(){
-		GameModel.Instance.NewGame();
-		GameModel.Instance.playWithCom = false;
+		GameModel.Instance.PlayerTime();
 		return RedirectToAction("Index");
 	}
 
 	public IActionResult ComTime(){
-		GameModel.Instance.NewGame();
-		GameModel.Instance.playWithCom = true;
+		GameModel.Instance.ComTime();
 		return RedirectToAction("Index");
 	}
 }
