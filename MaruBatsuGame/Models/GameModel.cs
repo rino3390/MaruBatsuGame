@@ -44,13 +44,11 @@ public class GameModel{
 		foreach (var _role in winRole){
 			if (_role.All(x => maruBatsu[x] is -1)) continue;
 
-			if (_role.Select(x=> maruBatsu[x]).Distinct().Count() != 2
-				|| _role.Count(x => maruBatsu[x] is -1) != 1)
+			if (_role.Select(x => maruBatsu[x]).Distinct().Count() != 2 || _role.Count(x => maruBatsu[x] is -1) != 1)
 				continue;
-			
-			NextTurn(_role.First(x=> maruBatsu[x]==-1));
+
+			NextTurn(_role.First(x => maruBatsu[x] == -1));
 			return;
-			
 		}
 
 		var _place = Enumerable.Range(0, maruBatsu.Count()).Where(x => maruBatsu[x] == -1).ToList();
@@ -85,7 +83,7 @@ public class GameModel{
 	}
 
 	public void NextTurn(int step){
-		if (IsGameOver()|| maruBatsu[step]!=-1) return;
+		if (IsGameOver() || maruBatsu[step] != -1) return;
 
 		maruBatsu[step] = turn;
 		maruBatsuText[step] = turn == 0 ? "O" : "X";
@@ -100,7 +98,7 @@ public class GameModel{
 
 		turn = 1 - turn;
 
-		if (turn == 1 && playerFirst && playWithCom && !IsGameOver()){
+		if (turn == Convert.ToInt32(playerFirst) && playWithCom && !IsGameOver()){
 			ComTurn();
 		}
 	}
