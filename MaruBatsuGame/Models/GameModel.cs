@@ -47,13 +47,13 @@ public class GameModel{
 			if (_role.Select(x => maruBatsu[x]).Distinct().Count() != 2 || _role.Count(x => maruBatsu[x] is -1) != 1)
 				continue;
 
-			NextTurn(_role.First(x => maruBatsu[x] == -1));
+			NextStep(_role.First(x => maruBatsu[x] == -1));
 			return;
 		}
 
 		var _place = Enumerable.Range(0, maruBatsu.Count()).Where(x => maruBatsu[x] == -1).ToList();
 		var _random = new Random();
-		NextTurn(_place[_random.Next(_place.Count)]);
+		NextStep(_place[_random.Next(_place.Count)]);
 	}
 
 	public bool IsGameOver(){
@@ -82,7 +82,7 @@ public class GameModel{
 		}
 	}
 
-	public void NextTurn(int step){
+	public void NextStep(int step){
 		if (IsGameOver() || maruBatsu[step] != -1) return;
 
 		maruBatsu[step] = turn;

@@ -10,7 +10,7 @@ public class HomeController : Controller{
 	}
 
 	public IActionResult NextStep(int step){
-		GameModel.Instance.NextTurn(step);
+		GameModel.Instance.NextStep(step);
 		return RedirectToAction("Index");
 	}
 
